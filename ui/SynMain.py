@@ -41,7 +41,7 @@ class SynMain(QMainWindow, Ui_MainWindow):
         """
         Slot documentation goes here.
         """
-
+        self.child_query_youka_liveuser.hide()
         self.MainGridLayout.addWidget(self.child_query_youka)
         self.child_query_youka.show()
 
@@ -50,6 +50,7 @@ class SynMain(QMainWindow, Ui_MainWindow):
         """
         Slot documentation goes here.
         """
+        self.child_query_youka.hide()
         self.MainGridLayout.addWidget(self.child_query_youka_liveuser)
         self.child_query_youka_liveuser.show()
 

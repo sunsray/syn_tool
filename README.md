@@ -16,7 +16,7 @@ class Youka(Config):
     HOST = 'xxx.xxx.com:PORT'
     ACCOUNT = 'ACCOUNT'
     PASSWORD = 'PASSWORD'
-    DB = 'dreams_mobile_plat'
+    DB = 'xxx'
     CSV_HEAD = ['SchoolCode', 'SchoolName', 'increaseCount']
     FIELDS = ['SchoolCode', 'SchoolName', 'allcount']
 

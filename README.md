@@ -3,6 +3,7 @@ Use Python 2.7.3, Pyqt4,xlsxwriter to  query data and generate Excel chart
 
 Remark: dev_config.py is a file  like:
 
+```Python
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 class Config:
@@ -41,3 +42,4 @@ class Youka(Config):
 
       order by currentUser desc,Area'''
     FUNC_CLICK_SQL = ' select FuncName,SUM(Count) counts from ClickLogs group by FuncName'
+```

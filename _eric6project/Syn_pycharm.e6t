@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Tasks SYSTEM "Tasks-6.0.dtd">
+<!-- eric6 tasks file for project Syn_pycharm -->
+<!-- Saved: 2016-07-01, 17:50:48 -->
+<Tasks version="6.0">
+  <ProjectScanFilter></ProjectScanFilter>
+  <Task priority="1" completed="False" type="1" uid="{89c276ea-8bad-4027-bb59-6c39651e4d70}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2016-06-28, 17:25:26</Created>
+    <Resource>
+      <Filename>ui/Query_Youka_User.py</Filename>
+      <Linenumber>102</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="1" uid="{eb167b7c-491d-47dc-a818-7d23d588e80c}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2016-06-28, 17:48:13</Created>
+    <Resource>
+      <Filename>ui/SynMain.py</Filename>
+      <Linenumber>43</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="1" uid="{431fd10a-3976-4f6a-89e5-8d8f2b4cb466}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2016-06-28, 17:48:13</Created>
+    <Resource>
+      <Filename>ui/SynMain.py</Filename>
+      <Linenumber>54</Linenumber>
+    </Resource>
+  </Task>
+</Tasks>

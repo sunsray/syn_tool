@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>946</width>
+    <height>629</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>931</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="MainGridLayout"/>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>946</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_query">
+    <property name="title">
+     <string>查询</string>
+    </property>
+    <addaction name="ac_query_youka_user"/>
+    <addaction name="ac_query_youka_live"/>
+   </widget>
+   <widget class="QMenu" name="menu_about">
+    <property name="title">
+     <string>关于</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="ac_quit"/>
+   </widget>
+   <addaction name="menu_query"/>
+   <addaction name="menu_about"/>
+  </widget>
+  <action name="ac_query_youka_user">
+   <property name="text">
+    <string>优卡新增用户查询</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="ac_quit">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="ac_query_youka_live">
+   <property name="text">
+    <string>优卡活跃用户查询</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

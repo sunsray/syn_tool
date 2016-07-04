@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-5.1.dtd">
+<!-- eric project file for project Syn_pycharm -->
+<!-- Saved: 2016-06-28, 17:48:18 -->
+<!-- Copyright (C) 2016 刘光辉, 408997137@qq.com -->
+<Project version="5.1">
+  <Language>en_US</Language>
+  <Hash>2546732dd3585090ee642c8c3edeef03679e9db6</Hash>
+  <ProgLanguage mixed="0">Python2</ProgLanguage>
+  <ProjectType>Qt4</ProjectType>
+  <Description>运维部技术支持组件</Description>
+  <Version>0.1</Version>
+  <Author>刘光辉</Author>
+  <Email>408997137@qq.com</Email>
+  <Eol index="-1"/>
+  <Sources>
+    <Source>__init__.py</Source>
+    <Source>dev_config.py</Source>
+    <Source>helper/__init__.py</Source>
+    <Source>main_app.py</Source>
+    <Source>setup.py</Source>
+    <Source>ui/MW_Query_Youka_LiveUser.py</Source>
+    <Source>ui/Query_Youka_User.py</Source>
+    <Source>ui/SynMain.py</Source>
+    <Source>ui/Ui_MainWindow.py</Source>
+    <Source>ui/Ui_Query_Youka_LiveUser.py</Source>
+    <Source>ui/Ui_Query_Youka_User.py</Source>
+    <Source>ui/__init__.py</Source>
+  </Sources>
+  <Forms>
+    <Form>ui/Query_Youka_LiveUser.ui</Form>
+    <Form>ui/MainWindow.ui</Form>
+    <Form>ui/Query_Youka_User.ui</Form>
+  </Forms>
+  <Translations/>
+  <Resources/>
+  <Interfaces/>
+  <Others/>
+  <MainScript>main_app.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES"/>
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.qm" type="TRANSLATIONS"/>
+    <FiletypeAssociation pattern="*.qrc" type="RESOURCES"/>
+    <FiletypeAssociation pattern="*.ts" type="TRANSLATIONS"/>
+    <FiletypeAssociation pattern="*.ui" type="FORMS"/>
+  </FiletypeAssociations>
+</Project>

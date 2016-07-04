@@ -87,3 +87,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+.idea/dbnavigator.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/syn_tool.iml
+.idea/workspace.xml
+dev_config.py

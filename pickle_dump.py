@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys,os
+import sys, os
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import pickle
@@ -9,6 +10,7 @@ import xlsxwriter
 from helper import tool
 from dev_config import Youka
 import datetime
+
 
 def init_data():
     data = {'all_func_clik': [
@@ -283,6 +285,41 @@ def init_data():
         pickle.dump(data, f)
 
 
+def add():
+    item = [u'2016年7月01号', 357488, 128482, 934814, 156666, 299626, 176978, 2647, 121640, 198298]
+    item_increase = [u'2016年7月01号', 50762, 12397, 113831, 9632, 33027, 18230, 0, 11174, 16666]
+    with open('func_click.pkl', 'rb') as f:
+        data_all = pickle.load(f)
+        data = data_all['all_func_clik']
+        data_increase = data_all['all_func_clik_increase']
+        for d in data:
+            d.append(item[data.index(d)])
+        for i in data_increase:
+            i.append(item_increase[data_increase.index(i)])
+        print data_all
+    # 持久化到pickle文件
+    with open('func_click.pkl', 'wb') as f:
+        pickle.dump(data_all, f)
+
+
+def pop(count=1):
+    with open('func_click.pkl', 'rb') as f:
+        data_all = pickle.load(f)
+        data = data_all['all_func_clik']
+        data_increase = data_all['all_func_clik_increase']
+        for i in range(0, count):
+            for item in data:
+                print item.pop()
+            for item2 in data_increase:
+                print item2.pop()
+
+        print data_all
+
+    # 持久化到pickle文件
+    with open('func_click.pkl', 'wb') as f:
+        pickle.dump(data_all, f)
+
+
 def make_all_func_clik(filename='mychart.xlsx'):
     os.chdir(os.path.dirname(sys.argv[0]))
     workbook = xlsxwriter.Workbook(filename)
@@ -290,7 +327,7 @@ def make_all_func_clik(filename='mychart.xlsx'):
     worksheet2 = workbook.add_worksheet('sheet_chart')
     bold = workbook.add_format({'bold': 1})
     headings = [u'报表时间', u'转账充值', u'查询账单', u'校园卡基本信息', u'补助流水查询', u'当日流水查询', u'历史流水查询', u'修改用户密码', u'拾卡信息', u'饭堂日记']
-    today = datetime.date.today().strftime(u'%Y年%m月%d日')
+    today = datetime.date.today().strftime(u'%Y年%m月%d号')
     tag = 1
     # load data from pickle file
     with open('func_click.pkl', 'rb') as f:
@@ -322,18 +359,19 @@ def make_all_func_clik(filename='mychart.xlsx'):
         # print data
         # 指向原数组
         data_all['all_func_clik'] = data
-    worksheet.write_row('A1', headings, bold)
+    worksheet.write('A1', '主要功能点击量')
+    worksheet.write_row('A2', headings, bold)
 
-    worksheet.write_column('A2', data[0])
-    worksheet.write_column('B2', data[1])
-    worksheet.write_column('C2', data[2])
-    worksheet.write_column('D2', data[3])
-    worksheet.write_column('E2', data[4])
-    worksheet.write_column('F2', data[5])
-    worksheet.write_column('G2', data[6])
-    worksheet.write_column('H2', data[7])
-    worksheet.write_column('I2', data[8])
-    worksheet.write_column('J2', data[9])
+    worksheet.write_column('A3', data[0])
+    worksheet.write_column('B3', data[1])
+    worksheet.write_column('C3', data[2])
+    worksheet.write_column('D3', data[3])
+    worksheet.write_column('E3', data[4])
+    worksheet.write_column('F3', data[5])
+    worksheet.write_column('G3', data[6])
+    worksheet.write_column('H3', data[7])
+    worksheet.write_column('I3', data[8])
+    worksheet.write_column('J3', data[9])
 
     #######################################################################
     #
@@ -351,9 +389,9 @@ def make_all_func_clik(filename='mychart.xlsx'):
     colors = ['red', 'gray', 'orange', 'cyan', 'green', 'yellow', 'purple', 'brown', 'magenta', 'red']
     for i in range(1, len(headings)):
         chart1.add_series({
-            'name': ['sheet_source', 0, i],
-            'categories': ['sheet_source', len(data[1]) - 1, 0, len(data[1]), 0],
-            'values': ['sheet_source', len(data[1]) - 1, i, len(data[1]), i],
+            'name': ['sheet_source', 1, i],  # 表头列
+            'categories': ['sheet_source', len(data[1]), 0, len(data[1]) + 1, 0],  # 行标题
+            'values': ['sheet_source', len(data[1]), i, len(data[1]) + 1, i],  # 此处是起始
             'fill': {'color': colors[i]},
             'data_labels': {'value': True}
         })
@@ -390,7 +428,7 @@ def make_all_func_clik(filename='mychart.xlsx'):
     if tag == 1:
         a = [item[-1] for item in data[1:]]
         b = [item[-2] for item in data[1:]]
-        a_minus_b = [a[b.index(i)]-i for i in b]
+        a_minus_b = [a[b.index(i)] - i for i in b]
         if a_minus_b:
             a_minus_b.reverse()
             for item in data_increase[1:]:
@@ -398,7 +436,8 @@ def make_all_func_clik(filename='mychart.xlsx'):
             # 给data[0]添加日期
 
             data_increase[0].append(today)
-    end_station = str(len(data[1]) + 5)
+    end_station = str(len(data[1]) + 6)
+    worksheet.write('A' + str(int(end_station) - 1), '主要功能点击增量')
     worksheet.write_row('A' + end_station, headings, bold)
 
     end_station_and1 = str(int(end_station) + 1)
@@ -418,9 +457,9 @@ def make_all_func_clik(filename='mychart.xlsx'):
     # print 'endstation_and1:' + end_station_and1
     for j in range(1, len(headings)):
         chart2.add_series({
-            'name': ['sheet_source', int(end_station)-1, j],
-            'categories': ['sheet_source', int(end_station), 0, int(end_station)+len(data_increase[1])-1, 0],
-            'values': ['sheet_source', int(end_station), j, int(end_station)+len(data_increase[1])-1, j],
+            'name': ['sheet_source', int(end_station) - 1, j],
+            'categories': ['sheet_source', int(end_station), 0, int(end_station) + len(data_increase[1]) - 1, 0],
+            'values': ['sheet_source', int(end_station), j, int(end_station) + len(data_increase[1]) - 1, j],
             'fill': {'color': colors[j]}
         })
         # Iterate all rows
@@ -435,7 +474,7 @@ def make_all_func_clik(filename='mychart.xlsx'):
     # print data_all
 
     workbook.close()
-    #tag =1 时更新pickel文件
+    # tag =1 时更新pickel文件
     if tag == 1:
         with open('func_click.pkl', 'wb') as f:
             pickle.dump(data_all, f)
@@ -466,4 +505,8 @@ def make_all_func_clik(filename='mychart.xlsx'):
 #     pprint.pprint(account_info)
 
 if __name__ == '__main__':
-    make_all_func_clik()
+    # make_all_func_clik()
+    # init_data()
+    pop()
+    # add()
+    # pass

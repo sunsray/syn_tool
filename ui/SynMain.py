@@ -12,6 +12,7 @@ from .Ui_MainWindow import Ui_MainWindow
 
 from .Query_Youka_User import Youka_User_Window
 from MW_Query_Youka_LiveUser import MW_Query_Youka_LiveUser
+from .MW_StayUserRatio import MW_StayUserRatio
 from dev_config import Youka
 
 
@@ -35,7 +36,7 @@ class SynMain(QMainWindow, Ui_MainWindow):
         self.setWindowTitle(u'新中新运维部支持工具')
         self.child_query_youka = Youka_User_Window()  # 注意在init在构造函数初始化child窗体
         self.child_query_youka_liveuser = MW_Query_Youka_LiveUser()
-
+        self.child_query_youka_stayUser = MW_StayUserRatio()
     @pyqtSignature("")
     def on_ac_query_youka_user_triggered(self):
         """
@@ -53,6 +54,15 @@ class SynMain(QMainWindow, Ui_MainWindow):
         self.child_query_youka.hide()
         self.MainGridLayout.addWidget(self.child_query_youka_liveuser)
         self.child_query_youka_liveuser.show()
+
+    @pyqtSignature("")
+    def on_ac_query_StayUser_triggered(self):
+        """
+        Slot documentation goes here.
+        """
+        self.child_query_youka_liveuser.hide()
+        self.MainGridLayout.addWidget(self.child_query_youka_stayUser)
+        self.child_query_youka_stayUser.show()
 
     @pyqtSignature("")
     def on_actionAbout_triggered(self):

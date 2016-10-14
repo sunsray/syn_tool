@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Tasks SYSTEM "Tasks-6.0.dtd">
 <!-- eric6 tasks file for project Syn_pycharm -->
-<!-- Saved: 2016-07-01, 17:50:48 -->
+<!-- Saved: 2016-10-14, 14:28:50 -->
 <Tasks version="6.0">
   <ProjectScanFilter></ProjectScanFilter>
-  <Task priority="1" completed="False" type="1" uid="{89c276ea-8bad-4027-bb59-6c39651e4d70}">
-    <Summary>TODO: not implemented yet</Summary>
-    <Description></Description>
-    <Created>2016-06-28, 17:25:26</Created>
-    <Resource>
-      <Filename>ui/Query_Youka_User.py</Filename>
-      <Linenumber>102</Linenumber>
-    </Resource>
-  </Task>
   <Task priority="1" completed="False" type="1" uid="{eb167b7c-491d-47dc-a818-7d23d588e80c}">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
@@ -29,6 +20,33 @@
     <Resource>
       <Filename>ui/SynMain.py</Filename>
       <Linenumber>54</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="1" uid="{16be256a-1bcb-45cf-8578-85c6d8ebe665}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2016-10-14, 14:19:56</Created>
+    <Resource>
+      <Filename>ui/Query_Youka_User.py</Filename>
+      <Linenumber>101</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="1" uid="{51a68f6c-adaa-4268-b81c-115c234676a0}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2016-10-14, 14:28:47</Created>
+    <Resource>
+      <Filename>ui/MW_StayUserRatio.py</Filename>
+      <Linenumber>32</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="1" uid="{d89b75d7-df7a-4646-b503-0d5c0b9fcc3d}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2016-10-14, 14:28:47</Created>
+    <Resource>
+      <Filename>ui/MW_StayUserRatio.py</Filename>
+      <Linenumber>40</Linenumber>
     </Resource>
   </Task>
 </Tasks>

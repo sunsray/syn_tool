@@ -41,6 +41,7 @@
     </property>
     <addaction name="ac_query_youka_user"/>
     <addaction name="ac_query_youka_live"/>
+    <addaction name="ac_query_StayUser"/>
    </widget>
    <widget class="QMenu" name="menu_about">
     <property name="title">
@@ -70,6 +71,11 @@
   <action name="ac_query_youka_live">
    <property name="text">
     <string>优卡活跃用户查询</string>
+   </property>
+  </action>
+  <action name="ac_query_StayUser">
+   <property name="text">
+    <string>用户留存率查询</string>
    </property>
   </action>
  </widget>

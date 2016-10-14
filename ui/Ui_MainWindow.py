@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Iwork\DevlopMy\python27work\Syn_pycharm\ui\MainWindow.ui'
+# Form implementation generated from reading ui file 'C:\Users\Administrator\PycharmProjects\syn_tool\ui\MainWindow.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -50,8 +50,11 @@ class Ui_MainWindow(object):
         self.ac_quit.setObjectName(_fromUtf8("ac_quit"))
         self.ac_query_youka_live = QtGui.QAction(MainWindow)
         self.ac_query_youka_live.setObjectName(_fromUtf8("ac_query_youka_live"))
+        self.ac_query_StayUser = QtGui.QAction(MainWindow)
+        self.ac_query_StayUser.setObjectName(_fromUtf8("ac_query_StayUser"))
         self.menu_query.addAction(self.ac_query_youka_user)
         self.menu_query.addAction(self.ac_query_youka_live)
+        self.menu_query.addAction(self.ac_query_StayUser)
         self.menu_about.addAction(self.actionAbout)
         self.menu_about.addAction(self.ac_quit)
         self.menuBar.addAction(self.menu_query.menuAction())
@@ -68,6 +71,7 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About", None))
         self.ac_quit.setText(_translate("MainWindow", "退出", None))
         self.ac_query_youka_live.setText(_translate("MainWindow", "优卡活跃用户查询", None))
+        self.ac_query_StayUser.setText(_translate("MainWindow", "用户留存率查询", None))
 
 
 if __name__ == "__main__":

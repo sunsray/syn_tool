@@ -23,7 +23,7 @@ executables = [Executable('main_app.py', base=base, targetName='syntool.exe', sh
 
 setup(
     name="SynItool",
-    version="1.0.0",
+    version="1.0.2",
     url='http://future.dreams.edu.cn/',
     author='liuguanghui',
     author_email='sunsray@163.com',

@@ -48,6 +48,14 @@ def export_csv(data_list, filename, fieldnames, fields):
                 writer.writerow(item_obj)  # 'Name': item['Name']
 
 
+def testcon(server, user, pwd, db, sqlstr):
+    conn = pymssql.connect(server, user, pwd, db,sqlstr)
+    cursor = conn.cursor()
+    cursor.execute(sqlstr)
+    row = cursor.fetchone()
+    conn.close()
+    return row
+
 def runsql(server, user, pwd, db, sqlstr):
     l = []
     with pymssql.connect(server, user, pwd, db) as conn:

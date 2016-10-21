@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Tasks SYSTEM "Tasks-6.0.dtd">
 <!-- eric6 tasks file for project Syn_pycharm -->
-<!-- Saved: 2016-10-14, 14:28:50 -->
+<!-- Saved: 2016-10-14, 17:46:32 -->
 <Tasks version="6.0">
   <ProjectScanFilter></ProjectScanFilter>
   <Task priority="1" completed="False" type="1" uid="{eb167b7c-491d-47dc-a818-7d23d588e80c}">
@@ -31,22 +31,22 @@
       <Linenumber>101</Linenumber>
     </Resource>
   </Task>
-  <Task priority="1" completed="False" type="1" uid="{51a68f6c-adaa-4268-b81c-115c234676a0}">
+  <Task priority="1" completed="False" type="1" uid="{b61552ec-931d-45ce-8169-7adcd1428ab8}">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2016-10-14, 14:28:47</Created>
+    <Created>2016-10-14, 17:46:26</Created>
     <Resource>
       <Filename>ui/MW_StayUserRatio.py</Filename>
-      <Linenumber>32</Linenumber>
+      <Linenumber>44</Linenumber>
     </Resource>
   </Task>
-  <Task priority="1" completed="False" type="1" uid="{d89b75d7-df7a-4646-b503-0d5c0b9fcc3d}">
+  <Task priority="1" completed="False" type="1" uid="{57c7f43b-fbb0-4362-9662-213480db3e66}">
     <Summary>TODO: not implemented yet</Summary>
     <Description></Description>
-    <Created>2016-10-14, 14:28:47</Created>
+    <Created>2016-10-14, 17:46:26</Created>
     <Resource>
       <Filename>ui/MW_StayUserRatio.py</Filename>
-      <Linenumber>40</Linenumber>
+      <Linenumber>76</Linenumber>
     </Resource>
   </Task>
 </Tasks>

@@ -117,6 +117,21 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         print "after inject data:"
         print self.shell_data
 
+        self.ar_All_Increase = []
+        for item in ar:
+            if ar.index(item) != len(ar) - 1:
+                d_next = ar[ar.index(item) + 1]
+            else:
+                end_1 = datetime.datetime.strptime(item, '%Y-%m-%d').date() + datetime.timedelta(1)
+                d_next = end_1.strftime('%Y-%m-%d')
+            sql_all_Increase_str = Youka.USER_ALL_INCREASE_EVERYDAY.format(item, d_next)
+            data_All_Increase_EverayDay = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB,
+                                                      sql_all_Increase_str)
+            self.ar_All_Increase.append(data_All_Increase_EverayDay[0]['CountNum'])
+        print '<<<<<<<<<<<<<<<<<<<<<'
+        print self.ar_All_Increase
+        print '<<<<<<<<<<<<<<<<<<<<<'
+
         # 查询 周数据
         date_will_apend = datetime.datetime.strptime(ar[-1], '%Y-%m-%d').date() + datetime.timedelta(1)
         date_str_will_apend = date_will_apend.strftime('%Y-%m-%d')
@@ -232,6 +247,9 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
                 worksheet.write_row(row, col, tuple(item), format_silver)
                 row += 1
 
+            # 填充新增用户数
+            worksheet.write_column('B3', tuple(self.ar_All_Increase), format_silver)
+
             # Create a format to use in the merged range.
             merge_format = workbook.add_format({
                 'bold': 1,
@@ -290,7 +308,7 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
             # 导出 周数据
             worksheet_WeekData = workbook.add_worksheet('WeekData')
             worksheet_WeekData.set_column(0, 1, 13)
-            worksheet_WeekData.set_column(0, 2, 18)
+            worksheet_WeekData.set_column(0, 2, 22)
             worksheet_WeekData.set_column(0, 3, 13)
             worksheet_WeekData.set_column(0, 4, 13)
 

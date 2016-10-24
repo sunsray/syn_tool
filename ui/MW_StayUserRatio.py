@@ -61,8 +61,10 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         self.ar_header = [(self.enddate + datetime.timedelta(-_)).strftime('%m.%d') for _ in range(1, days)]
         self.ar_header.sort()
 
+        # 查询留存率
         ar.sort()
         print ar
+
         threads = []
         global data
         data = []
@@ -115,6 +117,44 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         print "after inject data:"
         print self.shell_data
 
+        # 查询 周数据
+        date_will_apend = datetime.datetime.strptime(ar[-1], '%Y-%m-%d').date() + datetime.timedelta(1)
+        date_str_will_apend = date_will_apend.strftime('%Y-%m-%d')
+        sql_str_weeklive = Youka.LIVE_USER_COUNT.format(date_str_will_apend, ar[7], date_str_will_apend, ar[7],
+                                                        date_str_will_apend)
+        print sql_str_weeklive
+        self.week_day = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB, sql_str_weeklive)
+        print self.week_day[0]['CountDayLive']
+
+        ar2 = ar
+        ar.append(date_str_will_apend)
+        self.ar_day_live = []
+        # 每日活跃数
+        for _ in ar2[7:]:
+            if ar2.index(_) != len(ar2) - 1:
+                day_next = ar2[ar2.index(_) + 1]
+                day_sql_str = Youka.LIVE_USER_COUNT.format(day_next, _, day_next, _, day_next)
+                day_live_row = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB, day_sql_str)
+                print '*' * 40 + _ + '日活' + '*' * 40
+                print day_live_row[0]['CountDayLive']
+                self.ar_day_live.append(day_live_row[0]['CountDayLive'])
+
+        # 各学校数据（周活跃与新增用户）
+        sql_str_BySchool = Youka.USER_INCREASE_AND_DAY_LIVE.format(date_str_will_apend, ar[7], date_str_will_apend,
+                                                                   ar[7], date_str_will_apend)
+
+        self.data_Byschool = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB, sql_str_BySchool)
+        print '%s%s%s' % ('*' * 40, '各学校数据', '*' * 40)
+        print self.data_Byschool
+
+        # 充值分析
+        sql_str_Transfer = Youka.TRANSFER_ONE_TO_SIX.format(ar[7], date_str_will_apend, ar[7], date_str_will_apend,
+                                                            ar[7], date_str_will_apend, ar[7], date_str_will_apend,
+                                                            ar[7], date_str_will_apend, ar[7], date_str_will_apend)
+        self.data_Transfer = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB, sql_str_Transfer)
+        print '%s%s%s' % ('*' * 40, '充值数据', '*' * 40)
+        print self.data_Transfer
+
     def print_data(self, ar, data):
         lst = []
         for item in ar:
@@ -136,7 +176,7 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         """
         # TODO: not implemented yet
         # raise NotImplementedError
-        if self.shell_data:
+        if self.shell_data and self.data_Transfer and self.data_Byschool:
             # 选择存放目录
             directory = QFileDialog.getExistingDirectory(self, "QFileDialog.getExistingDirectory()", 'unknown para')
             filename = directory + '\\' + 'Yo_stayUserRatio' + self.fromdate.strftime(
@@ -153,6 +193,7 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
             format.set_pattern(1)  # This is optional when using a solid fill.
             format.set_bg_color('orange')
             format.set_font_size(11)
+
             format.set_bold()
 
             format2 = workbook.add_format()
@@ -203,6 +244,82 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
                           3. 例如：次日留存率：（当天新增的用户中，在第2天还登录的用户数）/第一天新增总用户数；
                            第3日留存率：（第一天新增用户中，在往后的第3天还有登录的用户数）/第一天新增总用户数；'''
             worksheet.merge_range('B19:H26', memo, merge_format)
+
+            # 导出 各学校数据
+            worksheet_Byschool = workbook.add_worksheet('Byschool')
+            worksheet_Byschool.write(0, 0, u'大区')
+            worksheet_Byschool.write(0, 1, u'学校')
+            worksheet_Byschool.write(0, 2, u'当前用户数')
+            worksheet_Byschool.write(0, 3, u'周活跃用户数')
+            worksheet_Byschool.write(0, 4, u'新增用户数')
+
+            r_bySchool = 1
+            c_bySchool = 0
+            for _ in self.data_Byschool:
+                area = (_['Area']).decode('gbk').encode('utf8')
+                worksheet_Byschool.write(r_bySchool, c_bySchool, area)
+                worksheet_Byschool.write(r_bySchool, c_bySchool + 1, _['SchoolName'])
+                worksheet_Byschool.write(r_bySchool, c_bySchool + 2, _['CountUser'] and _['CountUser'] or 0)
+                worksheet_Byschool.write(r_bySchool, c_bySchool + 3, _['CountLiveOne'] and _['CountLiveOne'] or 0)
+                worksheet_Byschool.write(r_bySchool, c_bySchool + 4, _['CountUserOne'] and _['CountUserOne'] or 0)
+                r_bySchool += 1
+
+            # 导出 充值情况
+            worksheet_Transfer = workbook.add_worksheet('Transfer')
+            worksheet_Transfer.write(0, 0, u'学校名称')
+            worksheet_Transfer.write(0, 1, u'学校代码')
+            worksheet_Transfer.write(0, 2, u'充值成功一次人数')
+            worksheet_Transfer.write(0, 3, u'两次')
+            worksheet_Transfer.write(0, 4, u'三次')
+            worksheet_Transfer.write(0, 5, u'四次')
+            worksheet_Transfer.write(0, 6, u'五次')
+            worksheet_Transfer.write(0, 7, u'六次')
+            r_transfer = 1
+            c_transfer = 0
+            for __ in self.data_Transfer:
+                worksheet_Transfer.write(r_transfer, c_transfer, __['SchoolName'])
+                worksheet_Transfer.write(r_transfer, c_transfer + 1, __['SchoolCode'])
+                worksheet_Transfer.write(r_transfer, c_transfer + 2, __['oneTimeCount'] and __['oneTimeCount'] or 0)
+                worksheet_Transfer.write(r_transfer, c_transfer + 3, __['TwoTimeCount'] and __['TwoTimeCount'] or 0)
+                worksheet_Transfer.write(r_transfer, c_transfer + 4, __['ThreeTimeCount'] and __['ThreeTimeCount'] or 0)
+                worksheet_Transfer.write(r_transfer, c_transfer + 5, __['FourTimeCount'] and __['FourTimeCount'] or 0)
+                worksheet_Transfer.write(r_transfer, c_transfer + 6, __['FiveTimeCount'] and __['FiveTimeCount'] or 0)
+                worksheet_Transfer.write(r_transfer, c_transfer + 7, __['SixTimeCount'] and __['SixTimeCount'] or 0)
+                r_transfer += 1
+
+            # 导出 周数据
+            worksheet_WeekData = workbook.add_worksheet('WeekData')
+            worksheet_WeekData.set_column(0, 1, 13)
+            worksheet_WeekData.set_column(0, 2, 18)
+            worksheet_WeekData.set_column(0, 3, 13)
+            worksheet_WeekData.set_column(0, 4, 13)
+
+            merge_format_WeekData = workbook.add_format({
+                'bold': 1,
+                'border': 1,
+                'align': 'center',
+                'valign': 'top'
+            })
+
+            worksheet_WeekData.merge_range('B2:B3', '日期', merge_format_WeekData)
+            worksheet_WeekData.merge_range('C2:C3', '截止目前累计用户', merge_format_WeekData)
+            worksheet_WeekData.merge_range('D2:D3', '周新增用户', merge_format_WeekData)
+            worksheet_WeekData.merge_range('E2:E3', '周活跃用户', merge_format_WeekData)
+            worksheet_WeekData.merge_range('F2:L2', '（本周）日活跃用户', merge_format_WeekData)
+
+            worksheet_WeekData.write(3, 1, self.ar_header[0] + '-' + self.ar_header[-1], merge_format_WeekData)
+            worksheet_WeekData.write(3, 2, 'x', merge_format_WeekData)
+            worksheet_WeekData.write(3, 3, 'x', merge_format_WeekData)
+            worksheet_WeekData.write(3, 4, self.week_day[0]['CountDayLive'], merge_format_WeekData)
+            r_week = 3
+            c_week = 5
+            for _ in self.ar_day_live:
+                worksheet_WeekData.write(r_week, c_week, _, merge_format_WeekData)
+                c_week += 1
+            c_week = 5
+            for __ in self.ar_header[7:]:
+                worksheet_WeekData.write(r_week - 1, c_week, __, merge_format_WeekData)
+                c_week += 1
 
             workbook.close()
             QMessageBox.information(self, "QMessageBox.information()", u'导出到目录{}成功!'.format(directory))

@@ -3,18 +3,21 @@
 """
 Module implementing MW_StayUserRatio.
 """
+from PyQt4.QtCore import Qt
 
 from PyQt4.QtCore import pyqtSignature
-from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import QDialog, QProgressDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtCore import QDateTime
 from .Ui_StayUserRatio import Ui_Dialog
+from PyQt4.QtCore import pyqtSlot, pyqtSignal
 from helper import tool
 import datetime, time
 from dev_config import Youka
 from helper import tool
 import xlsxwriter
+import StayRatioTask
 
 
 class MW_StayUserRatio(QDialog, Ui_Dialog):
@@ -41,20 +44,24 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         from_day = str(today + datetime.timedelta(-14)) + ' 00:00:00'
         self.dt_FromTime_StayUser.setDateTime(QDateTime.fromString(from_day, 'yyyy-MM-dd hh:mm:ss'))
 
+    def process_result(self, rev):
+        print 'Receiving', rev
+        # self.progressDialog.setValue(rev)
+        # self.lbl_fromTime_StayUser.setText(rev)
+
     @pyqtSignature("")
     def on_btn_Quey_StayUser_clicked(self):
         """
         Slot documentation goes here.
         """
-        # TODO: not implemented yet
-        # raise NotImplementedError
-        # self.query_date_from = self.dt_FromTime_StayUser.text()
-        # self.query_date_end = self.dt_EndTime_StayUser.text()
-        # print self.query_date_from
-        #
-        # print  type((self.dt_FromTime_StayUser.date().toPyDate() - self.dt_EndTime_StayUser.date().toPyDate()).days)
+        # self.progressDialog = QProgressDialog(self)
+        # self.progressDialog.setWindowModality(Qt.WindowModal)
+        # self.progressDialog.setMinimumDuration(5)
+        # self.progressDialog.show()
+
         self.fromdate = self.dt_FromTime_StayUser.date().toPyDate()
         self.enddate = self.dt_EndTime_StayUser.date().toPyDate()
+
         days = (self.enddate - self.fromdate).days + 1
 
         ar = [str(self.enddate + datetime.timedelta(-_)) for _ in range(1, days)]
@@ -65,58 +72,23 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         ar.sort()
         print ar
 
-        threads = []
-        global data
-        data = []
-        self.shell_data = []
-        for _ in ar:
-            row_data = []
-            _2 = self.str_to_date(_)
+        self.Tasks = StayRatioTask.Tasks(ar, self.process_result)
+        data = self.Tasks.start()
 
-            for __ in ar:
-                __2 = self.str_to_date(__)
-                if _2 == __2:
-                    row_data.append('100%')
-                elif __2 < _2:
-                    row_data.append('--')
-                else:
-                    tag1, tag2 = _, ar[ar.index(_) + 1]
-                    if __ == ar[-1]:
-                        tag3 = __
-                        __2plus = __2 + datetime.timedelta(1)
-                        tag4 = __2plus.strftime('%Y-%m-%d')
-                    else:
-                        tag3, tag4 = __, ar[ar.index(__) + 1]
-                    # row_data.append(__ + ":" + 'OK')
-                    # print '%s-%s : %s-%s' % (tag1, tag2, tag3, tag4)
-                    sql_str = Youka.STAY_USER_SQL.format(tag1, tag2, tag3, tag4, tag1, tag2, )
-                    # self.dat_result = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB, sql_str)
-                    # print '%s-%s : %s-%s  留存率：%s' % (tag1, tag2, tag3, tag4, self.dat_result[0]['stay_ratio'].strip())
-                    t = QueryThread(sql_str, _, __, data)
-                    t.start()
-                    threads.append(t)
-
-            print row_data
-            self.shell_data.append(row_data)
-            # data.append({_: row_data})
-            print '#' * 60
-        for t in threads:
-            t.join()
-        print 'self.shell_data:'
-        print self.shell_data
-        print "main Thread"
         print data
+
         maked_data = self.print_data(ar, data)
 
         print 'maked data:'
         print maked_data
-
+        self.shell_data = self.Tasks.get_shell_data()
         for item in self.shell_data:
             item.extend(maked_data[self.shell_data.index(item)])
 
         print "after inject data:"
         print self.shell_data
 
+        # 新增用户数
         self.ar_All_Increase = []
         for item in ar:
             if ar.index(item) != len(ar) - 1:
@@ -169,6 +141,7 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         self.data_Transfer = tool.runsql(Youka.HOST, Youka.ACCOUNT, Youka.PASSWORD, Youka.DB, sql_str_Transfer)
         print '%s%s%s' % ('*' * 40, '充值数据', '*' * 40)
         print self.data_Transfer
+
 
     def print_data(self, ar, data):
         lst = []
@@ -325,7 +298,7 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
             worksheet_WeekData.merge_range('E2:E3', '周活跃用户', merge_format_WeekData)
             worksheet_WeekData.merge_range('F2:L2', '（本周）日活跃用户', merge_format_WeekData)
 
-            worksheet_WeekData.write(3, 1, self.ar_header[0] + '-' + self.ar_header[-1], merge_format_WeekData)
+            worksheet_WeekData.write(3, 1, self.ar_header[7] + '-' + self.ar_header[-1], merge_format_WeekData)
             worksheet_WeekData.write(3, 2, 'x', merge_format_WeekData)
             worksheet_WeekData.write(3, 3, 'x', merge_format_WeekData)
             worksheet_WeekData.write(3, 4, self.week_day[0]['CountDayLive'], merge_format_WeekData)
@@ -367,11 +340,18 @@ class MW_StayUserRatio(QDialog, Ui_Dialog):
         y, m, d = t[0:3]
         return datetime.datetime(y, m, d)
 
+    @pyqtSlot(str)
+    def updateStatus(self, status):
+        self.lbl_fromTime_StayUser.setText(status)
+
 
 from threading import Thread
 
 
 # 利用多线程 将数据库查询结果 存储到  全局的数组
+
+
+
 
 class QueryThread(Thread):
     def __init__(self, sql_str, _, __, lst):
